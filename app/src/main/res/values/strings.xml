@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    
+    <string-array name="cities">
+        <item>Moscow</item>
+        <item>London</item>
+        <item>New York</item>
+        <item>Paris</item>
+        <item>Milan</item>
+    </string-array>
 </resources>

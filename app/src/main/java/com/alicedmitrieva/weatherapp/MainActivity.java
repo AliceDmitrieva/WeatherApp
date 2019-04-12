@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -27,7 +29,18 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        new RespondWeatherDataTask(MainActivity.this).execute();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                startSendingRequest();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        startSendingRequest();
     }
 
     @Override
@@ -38,5 +51,9 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     @Override
     public void onWeatherDataRequestError(@NonNull Exception error) {
 
+    }
+
+    void startSendingRequest() {
+        new RespondWeatherDataTask(MainActivity.this, spinner.getSelectedItem().toString()).execute();
     }
 }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WeatherApp</string>
-    
+    <string name="actionbar_spinner">ActionBar Spinner</string>
+
     <string-array name="cities">
         <item>Moscow</item>
         <item>London</item>

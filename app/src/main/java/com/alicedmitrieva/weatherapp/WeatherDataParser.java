@@ -6,6 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,11 +44,11 @@ public class WeatherDataParser {
                     forecastInfo.getJSONArray(TAG_WEATHER).getJSONObject(0).getString(TAG_DESCRIPTION),
                     forecastInfo.getJSONObject(TAG_MAIN).getDouble(TAG_TEMPERATURE));
 
-
-            List<WeatherData> detailsList = detailsMap.get(day);
+            Date date = clearTime(day);
+            List<WeatherData> detailsList = detailsMap.get(date);
             if (detailsList == null) {
                 detailsList = new ArrayList<>();
-                detailsMap.put(day, detailsList);
+                detailsMap.put(date, detailsList);
             }
             detailsList.add(details);
         }
@@ -54,7 +57,24 @@ public class WeatherDataParser {
         for (Map.Entry<Date, List<WeatherData>> entry : detailsMap.entrySet()) {
             dayList.add(new Day(entry.getKey(), entry.getValue()));
     }
-
+        Collections.sort(dayList, new DayComparator());
         return dayList;
+    }
+
+    private static Date clearTime(@NonNull Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    private static final class DayComparator implements Comparator<Day> {
+        @Override
+        public int compare(Day o1, Day o2) {
+            return o1.getDate().compareTo(o2.getDate());
+        }
     }
 }

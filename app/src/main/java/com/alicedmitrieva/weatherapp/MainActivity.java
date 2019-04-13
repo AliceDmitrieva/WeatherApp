@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
     @Override
     public void onWeatherDataRequestSuccess(@NonNull List<Day> weatherData) {
-        viewPager.setAdapter(new WeatherDataPagerAdapter(weatherData));
+        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, weatherData));
     }
 
     @Override
@@ -93,9 +93,9 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
     private void changeUnits(String pref_unit_value) {
         if (pref_unit_value.equals("celsius")) {
-            System.out.println("Celsius");
+
         } else {
-            System.out.println("Fahrenheit");
+
         }
     }
 

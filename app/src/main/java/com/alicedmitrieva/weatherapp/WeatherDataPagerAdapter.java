@@ -1,10 +1,13 @@
 package com.alicedmitrieva.weatherapp;
 
+import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -13,14 +16,16 @@ import java.util.List;
 
 public class WeatherDataPagerAdapter extends PagerAdapter {
 
+    Context context;
     List<Day> weatherData;
 
     private static class ViewHolder {
         TextView dateTextView;
-        ListView weatherDataListView;
+        RecyclerView weatherDataRecyclerView;
     }
 
-    public WeatherDataPagerAdapter(List<Day> weatherData) {
+    public WeatherDataPagerAdapter(Context context, List<Day> weatherData) {
+        this.context = context;
         this.weatherData = weatherData;
     }
 
@@ -37,10 +42,14 @@ public class WeatherDataPagerAdapter extends PagerAdapter {
         holder = new WeatherDataPagerAdapter.ViewHolder();
 
         holder.dateTextView = convertView.findViewById(R.id.date);
-        holder.weatherDataListView = convertView.findViewById(R.id.list);
+        holder.weatherDataRecyclerView = convertView.findViewById(R.id.recycler_view);
 
         holder.dateTextView.setText(day);
-        holder.weatherDataListView.setAdapter(new OneDayWeatherDataAdapter(item.getDetailInformation()));
+        holder.weatherDataRecyclerView.setAdapter(new OneDayWeatherDataAdapter(item.getDetailInformation()));
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 2);
+        holder.weatherDataRecyclerView.setLayoutManager(layoutManager);
+        holder.weatherDataRecyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         collection.addView(convertView);
 

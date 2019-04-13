@@ -1,76 +1,71 @@
 package com.alicedmitrieva.weatherapp;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class OneDayWeatherDataAdapter extends BaseAdapter {
+public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeatherDataAdapter.WeatherDataViewHolder> {
 
-    List<WeatherData> weatherDataDetails;
-
-    private static class ViewHolder {
-        TextView timeTextView;
-        TextView descriptionTextView;
-        TextView temperatureTextView;
-    }
+    private List<WeatherData> weatherDataDetails;
 
     public OneDayWeatherDataAdapter(List<WeatherData> weatherDataDetails) {
         this.weatherDataDetails = weatherDataDetails;
     }
 
     @Override
-    public int getCount() {
-        return weatherDataDetails.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return weatherDataDetails.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public WeatherDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        return new WeatherDataViewHolder(view);
+    }
 
-        WeatherData item = (WeatherData) getItem(position);
+    @Override
+    public void onBindViewHolder(WeatherDataViewHolder holder, int position) {
+        holder.bindProduct(weatherDataDetails.get(position));
+    }
 
-        DateFormat dateFormat = new SimpleDateFormat("HH:");
-        String time = dateFormat.format(item.getTime());
+    @Override
+    public int getItemCount() {
+        return weatherDataDetails.size();
+    }
 
-        OneDayWeatherDataAdapter.ViewHolder holder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+    public class WeatherDataViewHolder extends RecyclerView.ViewHolder {
 
-            holder = new OneDayWeatherDataAdapter.ViewHolder();
+        TextView timeTextView;
+        TextView descriptionTextView;
+        TextView temperatureTextView;
+        WeatherData weatherData;
 
-            holder.timeTextView = convertView.findViewById(R.id.time);
-            holder.descriptionTextView = convertView.findViewById(R.id.description);
-            holder.temperatureTextView = convertView.findViewById(R.id.temperature);
-
-            convertView.setTag(holder);
-
-        } else {
-            holder = (OneDayWeatherDataAdapter.ViewHolder) convertView.getTag();
+        public WeatherDataViewHolder(View itemView) {
+            super(itemView);
+            timeTextView = itemView.findViewById(R.id.time);
+            descriptionTextView = itemView.findViewById(R.id.description);
+            temperatureTextView = itemView.findViewById(R.id.temperature);
         }
 
-        holder.timeTextView.setText(time + "00");
-        holder.descriptionTextView.setText(item.getDescription());
-        holder.temperatureTextView.setText(item.getTemperature() + "°С");
+        void bindProduct(WeatherData weatherData) {
+            this.weatherData = weatherData;
 
-        return convertView;
+            DateFormat dateFormat = new SimpleDateFormat("HH:");
+            String time = dateFormat.format(weatherData.getTime());
+
+            timeTextView.setText(time + "00");
+            descriptionTextView.setText(weatherData.getDescription());
+            temperatureTextView.setText(weatherData.getTemperature() + "°С");
+
+        }
     }
 }
 

@@ -1,10 +1,14 @@
 package com.alicedmitrieva.weatherapp;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,7 +16,7 @@ import android.widget.Spinner;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener {
+public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     ViewPager viewPager;
     Spinner spinner;
@@ -24,6 +28,12 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
         viewPager = findViewById(R.id.viewPager);
         startSendingRequest();
+        setupSharedPreferences();
+    }
+
+    private void setupSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -54,6 +64,18 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onWeatherDataRequestSuccess(@NonNull List<Day> weatherData) {
         viewPager.setAdapter(new WeatherDataPagerAdapter(weatherData));
     }
@@ -67,5 +89,23 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         if (spinner != null) {
             new RespondWeatherDataTask(MainActivity.this, spinner.getSelectedItem().toString()).execute();
         }
+    }
+
+    private void changeUnits(String pref_unit_value) {
+        if (pref_unit_value.equals("celsius")) {
+            System.out.println("Celsius");
+        } else {
+            System.out.println("Fahrenheit");
+        }
+    }
+
+    private void loadUnitFromPreference(SharedPreferences sharedPreferences) {
+        changeUnits(sharedPreferences.getString(getString(R.string.pref_unit_key),getString(R.string.pref_unit_celsius_value)));
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("unit")) {
+            loadUnitFromPreference(sharedPreferences);        }
     }
 }

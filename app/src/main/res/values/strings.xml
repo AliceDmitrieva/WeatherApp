@@ -1,12 +1,20 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="actionbar_spinner">ActionBar Spinner</string>
+    <string name="units">Units</string>
+    <string name="action_settings">Settings</string>
 
-    <string-array name="cities">
-        <item>Moscow</item>
-        <item>London</item>
-        <item>New York</item>
-        <item>Paris</item>
-        <item>Milan</item>
-    </string-array>
+    <string name="moscow_city">Moscow</string>
+    <string name="london_city">London</string>
+    <string name="new_york_city">New York</string>
+    <string name="paris_city">Paris</string>
+    <string name="milan_city">Milan</string>
+
+    <string name="pref_unit_key" translatable="true">unit</string>
+    <string name="pref_unit_label_celsius">Celsius</string>
+    <string name="pref_unit_label_fahrenheit">Fahrenheit</string>
+
+    <string name="pref_unit_celsius_value" translatable="true">celsius</string>
+    <string name="pref_unit_fahrenheit_value" translatable="false">fahrenheit</string>
+
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="pref_unit_option_labels">
+        <item>@string/pref_unit_label_celsius</item>
+        <item>@string/pref_unit_label_fahrenheit</item>
+    </array>
+
+    <array name="pref_unit_option_values">
+        <item>@string/pref_unit_celsius_value</item>
+        <item>@string/pref_unit_fahrenheit_value</item>
+    </array>
+
+    <array name="cities">
+        <item>@string/moscow_city</item>
+        <item>@string/london_city</item>
+        <item>@string/new_york_city</item>
+        <item>@string/paris_city</item>
+        <item>@string/milan_city</item>
+    </array>
+
+</resources>

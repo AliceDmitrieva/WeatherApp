@@ -16,17 +16,19 @@ import java.util.List;
 
 public class WeatherDataPagerAdapter extends PagerAdapter {
 
-    Context context;
-    List<Day> weatherData;
+    private static List<Day> weatherData;
+    private Context context;
+    private String currentUnit;
 
     private static class ViewHolder {
         TextView dateTextView;
         RecyclerView weatherDataRecyclerView;
     }
 
-    public WeatherDataPagerAdapter(Context context, List<Day> weatherData) {
+    public WeatherDataPagerAdapter(Context context, List<Day> weatherData, String currentUnit) {
         this.context = context;
         this.weatherData = weatherData;
+        this.currentUnit = currentUnit;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class WeatherDataPagerAdapter extends PagerAdapter {
         holder.weatherDataRecyclerView = convertView.findViewById(R.id.recycler_view);
 
         holder.dateTextView.setText(day);
-        holder.weatherDataRecyclerView.setAdapter(new OneDayWeatherDataAdapter(item.getDetailInformation()));
+        holder.weatherDataRecyclerView.setAdapter(new OneDayWeatherDataAdapter(item.getDetailInformation(), currentUnit));
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 2);
         holder.weatherDataRecyclerView.setLayoutManager(layoutManager);
@@ -69,5 +71,9 @@ public class WeatherDataPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+    public static List<Day> getWeatherData() {
+        return weatherData;
     }
 }

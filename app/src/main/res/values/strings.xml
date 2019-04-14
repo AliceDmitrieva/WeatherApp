@@ -10,11 +10,11 @@
     <string name="paris_city">Paris</string>
     <string name="milan_city">Milan</string>
 
-    <string name="pref_unit_key" translatable="true">unit</string>
+    <string name="pref_unit_key" translatable="false">unit</string>
     <string name="pref_unit_label_celsius">Celsius</string>
     <string name="pref_unit_label_fahrenheit">Fahrenheit</string>
 
-    <string name="pref_unit_celsius_value" translatable="true">celsius</string>
+    <string name="pref_unit_celsius_value" translatable="false">celsius</string>
     <string name="pref_unit_fahrenheit_value" translatable="false">fahrenheit</string>
 
 </resources>

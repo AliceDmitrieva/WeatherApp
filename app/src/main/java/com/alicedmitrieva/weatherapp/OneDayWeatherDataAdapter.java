@@ -8,15 +8,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeatherDataAdapter.WeatherDataViewHolder> {
 
     private List<WeatherData> weatherDataDetails;
+    private String currentUnit;
 
-    public OneDayWeatherDataAdapter(List<WeatherData> weatherDataDetails) {
+    public OneDayWeatherDataAdapter(List<WeatherData> weatherDataDetails, String currentUnit) {
         this.weatherDataDetails = weatherDataDetails;
+        this.currentUnit = currentUnit;
     }
 
     @Override
@@ -63,8 +66,13 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
 
             timeTextView.setText(time + "00");
             descriptionTextView.setText(weatherData.getDescription());
-            temperatureTextView.setText(weatherData.getTemperature() + "°С");
 
+            DecimalFormat f = new DecimalFormat("#0");
+            if (currentUnit.equals("fahrenheit")) {
+                temperatureTextView.setText(f.format(DataConverter.celsiusToFahrenheit(weatherData.getTemperature())) + " °F");
+            } else {
+                temperatureTextView.setText(f.format(weatherData.getTemperature() )+ " °С");
+            }
         }
     }
 }

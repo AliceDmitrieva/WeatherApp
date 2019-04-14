@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         setContentView(R.layout.activity_main);
 
         viewPager = findViewById(R.id.viewPager);
-        startSendingRequest();
         setupSharedPreferences();
+        startSendingRequest();
     }
 
     private void setupSharedPreferences() {
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
     @Override
     public void onWeatherDataRequestSuccess(@NonNull List<Day> weatherData) {
-        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, weatherData));
+        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, weatherData, getCurrentUnit()));
     }
 
     @Override
@@ -91,21 +91,19 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         }
     }
 
-    private void changeUnits(String pref_unit_value) {
-        if (pref_unit_value.equals("celsius")) {
-
-        } else {
-
-        }
+    private String getCurrentUnit() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getString
+                (getString(R.string.pref_unit_key), getString(R.string.pref_unit_celsius_value));
     }
 
-    private void loadUnitFromPreference(SharedPreferences sharedPreferences) {
-        changeUnits(sharedPreferences.getString(getString(R.string.pref_unit_key),getString(R.string.pref_unit_celsius_value)));
+    private void changeCurrentUnit() {
+        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, WeatherDataPagerAdapter.getWeatherData(), getCurrentUnit()));
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("unit")) {
-            loadUnitFromPreference(sharedPreferences);        }
+            changeCurrentUnit();
+        }
     }
 }

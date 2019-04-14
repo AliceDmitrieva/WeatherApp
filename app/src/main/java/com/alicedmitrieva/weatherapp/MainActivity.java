@@ -18,8 +18,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    ViewPager viewPager;
-    Spinner spinner;
+    private static final String CITY = "CITY";
+    private static final String CITY_POSITION = "CITY POSITION";
+
+    private boolean isActivityRecreated = false;
+    private String cityValue;
+    private int cityPoistion;
+    private ViewPager viewPager;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
         viewPager = findViewById(R.id.viewPager);
         setupSharedPreferences();
-        startSendingRequest();
     }
 
     private void setupSharedPreferences() {
@@ -50,7 +55,17 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                startSendingRequest();
+                if (!isActivityRecreated) {
+                    cityValue = spinner.getSelectedItem().toString();
+                    cityPoistion = adapter.getPosition(cityValue);
+
+                    startSendingRequest();
+                } else {
+                    updateData();
+                    spinner.setSelection(cityPoistion);
+                    isActivityRecreated = false;
+
+                }
             }
 
             @Override
@@ -58,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
             }
         });
+
 
         spinner.setAdapter(adapter);
         return true;
@@ -87,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
     void startSendingRequest() {
         if (spinner != null) {
-            new RespondWeatherDataTask(MainActivity.this, spinner.getSelectedItem().toString()).execute();
+            new RespondWeatherDataTask(MainActivity.this, cityValue).execute();
         }
     }
 
@@ -96,14 +112,29 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
                 (getString(R.string.pref_unit_key), getString(R.string.pref_unit_celsius_value));
     }
 
-    private void changeCurrentUnit() {
+    private void updateData() {
         viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, WeatherDataPagerAdapter.getWeatherData(), getCurrentUnit()));
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("unit")) {
-            changeCurrentUnit();
+            updateData();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(CITY, cityValue);
+        outState.putInt(CITY_POSITION, cityPoistion);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        cityValue = savedInstanceState.getString(CITY);
+        cityPoistion = savedInstanceState.getInt(CITY_POSITION);
+        isActivityRecreated = true;
     }
 }

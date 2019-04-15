@@ -63,8 +63,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void clearDatabase() {
+        String clearTableWeekDays = "DELETE FROM " + DayTableColumns.TABLE_DAYS;
+        String clearTableSections = "DELETE FROM " + DetailsTableColumns.TABLE_DETAILS;
+        getReadableDatabase().execSQL(clearTableWeekDays);
+        getReadableDatabase().execSQL(clearTableSections);
+    }
 
     public void addData(List<Day> weatherData) {
+        clearDatabase();
         SQLiteDatabase database = this.getWritableDatabase();
 
         for (Day day : weatherData) {

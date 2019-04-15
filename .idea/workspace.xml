@@ -17,11 +17,16 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DataConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DataConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DatabaseHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -106,30 +111,30 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="gradle" value="7" />
+          <entry key="gradle" value="8" />
           <entry key="java" value="89" />
           <entry key="xml" value="76" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Groovy" value="7" />
+          <entry key="Groovy" value="8" />
           <entry key="JAVA" value="89" />
           <entry key="XML" value="76" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="gradle" value="18" />
-          <entry key="java" value="5054" />
+          <entry key="gradle" value="21" />
+          <entry key="java" value="5071" />
           <entry key="txt" value="3" />
           <entry key="xml" value="1046" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Groovy" value="18" />
-          <entry key="JAVA" value="5054" />
+          <entry key="Groovy" value="21" />
+          <entry key="JAVA" value="5071" />
           <entry key="PLAIN_TEXT" value="3" />
           <entry key="XML" value="1046" />
         </counts>
@@ -142,7 +147,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="140">
-              <caret line="105" selection-start-line="105" selection-end-line="105" />
+              <caret line="109" selection-start-line="109" selection-end-line="109" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -153,8 +158,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DatabaseHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="120" selection-start-line="120" selection-end-line="120" />
+            <state relative-caret-position="191">
+              <caret line="127" selection-start-line="127" selection-end-line="127" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -213,7 +218,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/menu/android_action_bar_spinner_menu.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/arrays.xml" />
-        <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/xml/settings_preferences.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
@@ -227,9 +231,10 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/one_day_screen.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-land/list_item.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DatabaseHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DataConverter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DatabaseHelper.java" />
       </list>
     </option>
   </component>
@@ -476,7 +481,7 @@
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Terminal" order="3" />
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
-      <window_info anchor="bottom" id="Build" order="5" weight="0.20068027" />
+      <window_info anchor="bottom" id="Build" order="5" weight="0.18197279" />
       <window_info anchor="bottom" id="Android Profiler" order="6" weight="0.45238096" />
       <window_info anchor="bottom" id="Run" order="7" weight="0.22278911" />
       <window_info active="true" anchor="bottom" id="Debug" order="8" visible="true" weight="0.23809524" />
@@ -525,51 +530,45 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java</url>
-          <line>120</line>
+          <line>124</line>
           <properties />
           <option name="timeStamp" value="88" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java</url>
-          <line>110</line>
+          <line>114</line>
           <properties />
           <option name="timeStamp" value="112" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java</url>
-          <line>98</line>
+          <line>102</line>
           <properties />
           <option name="timeStamp" value="123" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java</url>
-          <line>99</line>
+          <line>103</line>
           <properties />
           <option name="timeStamp" value="124" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java</url>
-          <line>105</line>
+          <line>109</line>
           <properties />
           <option name="timeStamp" value="125" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java</url>
-          <line>104</line>
+          <line>108</line>
           <properties />
           <option name="timeStamp" value="126" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DatabaseHelper.java</url>
-          <line>120</line>
+          <line>127</line>
           <properties />
           <option name="timeStamp" value="128" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DatabaseHelper.java</url>
-          <line>121</line>
-          <properties />
-          <option name="timeStamp" value="129" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -611,13 +610,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1193">
           <caret line="75" column="10" selection-start-line="75" selection-end-line="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="28" column="20" selection-start-line="28" selection-start-column="20" selection-end-line="28" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -793,10 +785,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
-          <caret line="105" selection-start-line="105" selection-end-line="105" />
+          <caret line="109" selection-start-line="109" selection-end-line="109" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -805,8 +804,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/alicedmitrieva/weatherapp/DatabaseHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="120" selection-start-line="120" selection-end-line="120" />
+        <state relative-caret-position="191">
+          <caret line="127" selection-start-line="127" selection-end-line="127" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

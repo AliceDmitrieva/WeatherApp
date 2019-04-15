@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
         viewPager = findViewById(R.id.viewPager);
         databaseHelper = new DatabaseHelper(this);
+
+        Stetho.initializeWithDefaults(this);
         setupSharedPreferences();
     }
 

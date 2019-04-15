@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     private static final String CITY = "CITY";
     private static final String CITY_POSITION = "CITY POSITION";
 
+    private static DatabaseHelper databaseHelper;
     private boolean isActivityRecreated = false;
     private String cityValue;
     private int cityPoistion;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         setContentView(R.layout.activity_main);
 
         viewPager = findViewById(R.id.viewPager);
+        databaseHelper = new DatabaseHelper(this);
         setupSharedPreferences();
     }
 
@@ -94,11 +97,13 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     @Override
     public void onWeatherDataRequestSuccess(@NonNull List<Day> weatherData) {
         viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, weatherData, getCurrentUnit()));
+        databaseHelper.addData(weatherData);
     }
 
     @Override
     public void onWeatherDataRequestError(@NonNull Exception error) {
-
+        Toast.makeText(this, "No Internet", Toast.LENGTH_LONG).show();
+        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, databaseHelper.getData(), getCurrentUnit()));
     }
 
     void startSendingRequest() {

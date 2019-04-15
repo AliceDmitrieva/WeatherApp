@@ -72,8 +72,4 @@ public class WeatherDataPagerAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
-
-    public static List<Day> getWeatherData() {
-        return weatherData;
-    }
 }

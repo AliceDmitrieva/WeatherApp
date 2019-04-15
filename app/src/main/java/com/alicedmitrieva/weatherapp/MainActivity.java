@@ -15,19 +15,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.facebook.stetho.Stetho;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String CITY = "CITY";
-    private static final String CITY_POSITION = "CITY POSITION";
-
     private static DatabaseHelper databaseHelper;
-    private boolean isActivityRecreated = false;
-    private String cityValue;
-    private int cityPoistion;
+    boolean isDayDataSaved = false;
+    private String city;
+    private int cityPosition;
     private ViewPager viewPager;
     private Spinner spinner;
 
@@ -39,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         viewPager = findViewById(R.id.viewPager);
         databaseHelper = new DatabaseHelper(this);
 
-        Stetho.initializeWithDefaults(this);
         setupSharedPreferences();
     }
 
@@ -59,19 +56,19 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        isDayDataSaved = isCurrentDateExisted();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if (!isActivityRecreated) {
-                    cityValue = spinner.getSelectedItem().toString();
-                    cityPoistion = adapter.getPosition(cityValue);
-
+                if (!isDayDataSaved) {
+                    city = spinner.getSelectedItem().toString();
+                    cityPosition = position;
                     startSendingRequest();
                 } else {
-                    updateData();
-                    spinner.setSelection(cityPoistion);
-                    isActivityRecreated = false;
-
+                    cityPosition = databaseHelper.getCityPosition();
+                    restoreData();
+                    spinner.setSelection(cityPosition);
+                    isDayDataSaved = false;
                 }
             }
 
@@ -81,8 +78,6 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
             }
         });
 
-
-        spinner.setAdapter(adapter);
         return true;
     }
 
@@ -101,18 +96,29 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     @Override
     public void onWeatherDataRequestSuccess(@NonNull List<Day> weatherData) {
         viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, weatherData, getCurrentUnit()));
-        databaseHelper.addData(weatherData);
+        databaseHelper.addCityPosition(cityPosition);
+        databaseHelper.addWeatherData(weatherData);
     }
 
     @Override
     public void onWeatherDataRequestError(@NonNull Exception error) {
-        Toast.makeText(this, "No Internet", Toast.LENGTH_LONG).show();
-        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, databaseHelper.getData(), getCurrentUnit()));
+        Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
     }
 
     void startSendingRequest() {
         if (spinner != null) {
-            new RespondWeatherDataTask(MainActivity.this, cityValue).execute();
+            new RespondWeatherDataTask(MainActivity.this, city).execute();
+        }
+    }
+
+    private boolean isCurrentDateExisted() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = (dateFormat.format(new Date()));
+        if (!databaseHelper.getWeatherData().isEmpty()) {
+            String firstSavedDate = dateFormat.format(databaseHelper.getWeatherData().get(0).getDate());
+            return firstSavedDate.equals(currentDate);
+        } else {
+            return false;
         }
     }
 
@@ -121,29 +127,14 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
                 (getString(R.string.pref_unit_key), getString(R.string.pref_unit_celsius_value));
     }
 
-    private void updateData() {
-        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, WeatherDataPagerAdapter.getWeatherData(), getCurrentUnit()));
+    private void restoreData() {
+        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, databaseHelper.getWeatherData(), getCurrentUnit()));
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("unit")) {
-            updateData();
+            restoreData();
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(CITY, cityValue);
-        outState.putInt(CITY_POSITION, cityPoistion);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        cityValue = savedInstanceState.getString(CITY);
-        cityPoistion = savedInstanceState.getInt(CITY_POSITION);
-        isActivityRecreated = true;
     }
 }

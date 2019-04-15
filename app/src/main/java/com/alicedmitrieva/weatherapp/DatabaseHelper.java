@@ -16,6 +16,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "weatherInfoManager";
 
+    private interface CityTableColumns extends BaseColumns {
+
+        String KEY_CITY_POSITION = "city_position";
+
+        String TABLE_CITIES = "cities";
+
+        String CREATE_TABLE_CITIES = "CREATE TABLE " + TABLE_CITIES
+                + "(" + _ID + " INTEGER PRIMARY KEY,"
+                + KEY_CITY_POSITION + " INTEGER" + ")";
+    }
+
     private interface DayTableColumns extends BaseColumns {
 
         String KEY_DATE = "date";
@@ -51,27 +62,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CityTableColumns.CREATE_TABLE_CITIES);
         db.execSQL(DayTableColumns.CREATE_TABLE_DAYS);
         db.execSQL(DetailsTableColumns.CREATE_TABLE_DETAILS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + CityTableColumns.TABLE_CITIES);
         db.execSQL("DROP TABLE IF EXISTS " + DayTableColumns.TABLE_DAYS);
         db.execSQL("DROP TABLE IF EXISTS " + DetailsTableColumns.TABLE_DETAILS);
 
         onCreate(db);
     }
 
-    public void clearDatabase() {
+    public void clearCityPosition() {
+        String clearTableCities = "DELETE FROM " + CityTableColumns.TABLE_CITIES;
+        getReadableDatabase().execSQL(clearTableCities);
+    }
+
+    public void clearWeatherData() {
         String clearTableWeekDays = "DELETE FROM " + DayTableColumns.TABLE_DAYS;
         String clearTableSections = "DELETE FROM " + DetailsTableColumns.TABLE_DETAILS;
+
         getReadableDatabase().execSQL(clearTableWeekDays);
         getReadableDatabase().execSQL(clearTableSections);
     }
 
-    public void addData(List<Day> weatherData) {
-        clearDatabase();
+    public void addCityPosition(int cityPosition) {
+        clearCityPosition();
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues cityValues = new ContentValues();
+        cityValues.put(CityTableColumns.KEY_CITY_POSITION, cityPosition);
+        database.insert(CityTableColumns.TABLE_CITIES, null, cityValues);
+    }
+
+    public void addWeatherData(List<Day> weatherData) {
+        clearWeatherData();
         SQLiteDatabase database = this.getWritableDatabase();
 
         for (Day day : weatherData) {
@@ -91,7 +118,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Day> getData() {
+    public int getCityPosition() {
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        Cursor cityCursor = database.query(CityTableColumns.TABLE_CITIES, null, null, null,
+                null, null, null);
+
+        int cityValue = 0;
+        for (cityCursor.moveToFirst(); !cityCursor.isAfterLast(); cityCursor.moveToNext()) {
+            cityValue = cityCursor.getInt(cityCursor.getColumnIndex(CityTableColumns.KEY_CITY_POSITION));
+        }
+        return cityValue;
+    }
+
+
+    public List<Day> getWeatherData() {
         SQLiteDatabase database = this.getReadableDatabase();
         List<Day> weatherData = new ArrayList<>();
 
@@ -117,9 +158,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Date time = new Date(detailsCursor.getString(detailsCursor.getColumnIndex(DetailsTableColumns.KEY_TIME)));
                 String description = detailsCursor.getString(detailsCursor.getColumnIndex(DetailsTableColumns.KEY_DESCRIPTION));
                 Double temperature = detailsCursor.getDouble(detailsCursor.getColumnIndex(DetailsTableColumns.KEY_TEMPERATURE));
-                long detailsDayId = detailsCursor.getLong(detailsCursor.getColumnIndex(DayTableColumns._ID));
 
-                list.add(new WeatherData (time, description, temperature));
+                list.add(new WeatherData(time, description, temperature));
             }
 
             weatherData.add(new Day(date, list));

@@ -57,6 +57,11 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         spinner.setAdapter(adapter);
 
         isDayDataSaved = isCurrentDateExisted();
+        if (isDayDataSaved) {
+            cityPosition = databaseHelper.getCityPosition();
+            spinner.setSelection(cityPosition);
+        }
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -65,9 +70,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
                     cityPosition = position;
                     startSendingRequest();
                 } else {
-                    cityPosition = databaseHelper.getCityPosition();
                     restoreData();
-                    spinner.setSelection(cityPosition);
                     isDayDataSaved = false;
                 }
             }

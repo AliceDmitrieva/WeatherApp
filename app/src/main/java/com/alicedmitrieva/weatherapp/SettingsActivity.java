@@ -29,19 +29,18 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
-    private void setUnit(String unit) {
-        this.unit = unit;
-    };
-
     private String getUnit() {
         return unit;
+    }
+
+    private void setUnit(String unit) {
+        this.unit = unit;
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("unit")) {
-            setUnit(PreferenceManager.getDefaultSharedPreferences(this).getString
-                    (getString(R.string.pref_unit_key), getString(R.string.pref_unit_celsius_value)));
+            setUnit(sharedPreferences.getString(getString(R.string.pref_unit_key), getString(R.string.pref_unit_celsius_value)));
         }
     }
 
@@ -49,13 +48,22 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
-                Intent intent = new Intent();
-                intent.putExtra("unit", unit);
-                setResult(RESULT_OK, intent);
+                sendDataToMainActivity();
                 finish();
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        sendDataToMainActivity();
+        finish();
+    }
+
+    private void sendDataToMainActivity() {
+        Intent intent = new Intent();
+        intent.putExtra("unit", getUnit());
+        setResult(RESULT_OK, intent);
     }
 }

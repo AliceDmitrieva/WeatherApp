@@ -1,9 +1,7 @@
 package com.alicedmitrieva.weatherapp;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -99,9 +97,6 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
- //               Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
- //               startActivityForResult(intent, currentUnit);
-
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivityForResult(intent, 1);
 
@@ -126,15 +121,12 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("unit");
-                currentUnit = result;
-                fragment = null;
-                restoreData();
-            }
-            if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Data was not changed", Toast.LENGTH_LONG).show();
-            }
+            String result = data != null ? data.getStringExtra("unit") : null;
+                if ((!currentUnit.equals(result)) && (result != null)) {
+                    currentUnit = result;
+                    fragment = null;
+                    restoreData();
+                }
         }
     }
 

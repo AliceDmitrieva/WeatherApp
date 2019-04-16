@@ -44,6 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String KEY_DAY_ID = "day_id";
         String KEY_TIME = "time";
+        String KEY_ICON = "icon";
         String KEY_TEMPERATURE = "temperature";
         String KEY_DESCRIPTION = "description";
 
@@ -52,6 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String CREATE_TABLE_DETAILS = "CREATE TABLE " + TABLE_DETAILS
                 + "(" + _ID + " INTEGER PRIMARY KEY,"
                 + KEY_TIME + " DATETIME,"
+                + KEY_ICON + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT,"
                 + KEY_TEMPERATURE + " REAL,"
                 + KEY_DAY_ID + " INTEGER,"
@@ -112,6 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             for (WeatherData details : day.getDetailInformation()) {
                 ContentValues detailValues = new ContentValues();
                 detailValues.put(DetailsTableColumns.KEY_TIME, details.getTime().toString());
+                detailValues.put(DetailsTableColumns.KEY_ICON, details.getIcon());
                 detailValues.put(DetailsTableColumns.KEY_DESCRIPTION, details.getDescription());
                 detailValues.put(DetailsTableColumns.KEY_TEMPERATURE, details.getTemperature());
                 detailValues.put(DetailsTableColumns.KEY_DAY_ID, dayId);
@@ -161,10 +164,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             for (detailsCursor.moveToFirst(); !detailsCursor.isAfterLast(); detailsCursor.moveToNext()) {
                 Date time = new Date(detailsCursor.getString(detailsCursor.getColumnIndex(DetailsTableColumns.KEY_TIME)));
+                String icon = detailsCursor.getString(detailsCursor.getColumnIndex(DetailsTableColumns.KEY_ICON));
                 String description = detailsCursor.getString(detailsCursor.getColumnIndex(DetailsTableColumns.KEY_DESCRIPTION));
                 Double temperature = detailsCursor.getDouble(detailsCursor.getColumnIndex(DetailsTableColumns.KEY_TEMPERATURE));
 
-                list.add(new WeatherData(time, description, temperature));
+                list.add(new WeatherData(time, icon, description, temperature));
             }
 
             weatherData.add(new Day(date, list));

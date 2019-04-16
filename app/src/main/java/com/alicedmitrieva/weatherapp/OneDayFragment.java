@@ -69,7 +69,7 @@ public class OneDayFragment extends Fragment {
         String day = dateFormat.format(date);
 
         dateTextView.setText(day);
-        OneDayWeatherDataAdapter adapter = new OneDayWeatherDataAdapter(weatherDataList, unit);
+        OneDayWeatherDataAdapter adapter = new OneDayWeatherDataAdapter(this.getContext(), weatherDataList, unit);
         recyclerView.setAdapter(adapter);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);

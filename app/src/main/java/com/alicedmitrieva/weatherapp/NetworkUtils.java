@@ -1,5 +1,7 @@
 package com.alicedmitrieva.weatherapp;
 
+import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -44,4 +46,9 @@ public class NetworkUtils {
                 }
         }
     }
+
+    public static String getIconUrl(Context context, WeatherData weatherData) {
+        return context.getResources().getString(R.string.icon_url) + weatherData.getIcon() + ".png";
+    }
+
 }

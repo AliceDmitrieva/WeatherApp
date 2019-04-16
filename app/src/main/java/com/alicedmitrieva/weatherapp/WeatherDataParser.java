@@ -21,6 +21,7 @@ public class WeatherDataParser {
     public static final String TAG_LIST = "list";
     public static final String TAG_DATE = "dt";
     public static final String TAG_WEATHER = "weather";
+    public static final String TAG_ICON = "icon";
     public static final String TAG_DESCRIPTION = "description";
     public static final String TAG_MAIN = "main";
     public static final String TAG_TEMPERATURE = "temp";
@@ -41,6 +42,7 @@ public class WeatherDataParser {
             Date day = new Date(TimeUnit.SECONDS.toMillis(forecastInfo.getLong(TAG_DATE)));
 
             WeatherData details = new WeatherData(day,
+                    forecastInfo.getJSONArray(TAG_WEATHER).getJSONObject(0).getString(TAG_ICON),
                     forecastInfo.getJSONArray(TAG_WEATHER).getJSONObject(0).getString(TAG_DESCRIPTION),
                     forecastInfo.getJSONObject(TAG_MAIN).getDouble(TAG_TEMPERATURE));
 

@@ -9,11 +9,13 @@ import java.util.Date;
 public class WeatherData implements Parcelable {
 
     @NonNull private final Date time;
+    @NonNull private final String icon;
     @NonNull private final String description;
-    private final double temperature;
+    @NonNull private final double temperature;
 
-    public WeatherData (@NonNull Date time, @NonNull String description, @NonNull double temperature) {
+    public WeatherData (@NonNull Date time, @NonNull String icon, @NonNull String description, @NonNull double temperature) {
         this.time = time;
+        this.icon = icon;
         this.description = description;
         this.temperature = temperature;
     }
@@ -24,18 +26,22 @@ public class WeatherData implements Parcelable {
     }
 
     @NonNull
+    public String getIcon() {return icon;}
+
+    @NonNull
     public String getDescription() {
         return description;
     }
 
+    @NonNull
     public double getTemperature() {
         return temperature;
     }
 
-
     protected WeatherData(Parcel in) {
         long tmpTime = in.readLong();
         time = tmpTime != -1 ? new Date(tmpTime) : null;
+        icon = in.readString();
         description = in.readString();
         temperature = in.readDouble();
     }
@@ -48,6 +54,7 @@ public class WeatherData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(time != null ? time.getTime() : -1L);
+        dest.writeString(icon);
         dest.writeString(description);
         dest.writeDouble(temperature);
     }
@@ -64,4 +71,5 @@ public class WeatherData implements Parcelable {
             return new WeatherData[size];
         }
     };
+
 }

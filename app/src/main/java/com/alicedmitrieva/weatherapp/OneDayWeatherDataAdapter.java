@@ -1,11 +1,15 @@
 package com.alicedmitrieva.weatherapp;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -14,10 +18,12 @@ import java.util.List;
 
 public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeatherDataAdapter.WeatherDataViewHolder> {
 
+    private Context context;
     private List<WeatherData> weatherDataDetails;
     private String currentUnit;
 
-    public OneDayWeatherDataAdapter(List<WeatherData> weatherDataDetails, String currentUnit) {
+    public OneDayWeatherDataAdapter(Context context, List<WeatherData> weatherDataDetails, String currentUnit) {
+        this.context = context;
         this.weatherDataDetails = weatherDataDetails;
         this.currentUnit = currentUnit;
     }
@@ -47,6 +53,7 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
     public class WeatherDataViewHolder extends RecyclerView.ViewHolder {
 
         TextView timeTextView;
+        ImageView iconImageView;
         TextView descriptionTextView;
         TextView temperatureTextView;
         WeatherData weatherData;
@@ -54,6 +61,7 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
         public WeatherDataViewHolder(View itemView) {
             super(itemView);
             timeTextView = itemView.findViewById(R.id.time);
+            iconImageView = itemView.findViewById(R.id.icon);
             descriptionTextView = itemView.findViewById(R.id.description);
             temperatureTextView = itemView.findViewById(R.id.temperature);
         }
@@ -65,6 +73,9 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
             String time = dateFormat.format(weatherData.getTime());
 
             timeTextView.setText(time + "00");
+
+            Picasso.get().load(NetworkUtils.getIconUrl(context, weatherData)).into(iconImageView);
+
             descriptionTextView.setText(weatherData.getDescription());
 
             DecimalFormat f = new DecimalFormat("#0");

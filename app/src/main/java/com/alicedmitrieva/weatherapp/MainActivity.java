@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,10 +25,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static DatabaseHelper databaseHelper;
+    private static final String FRAGMENT_TAG = "fragment tag";
+    private Fragment fragment;
+
     boolean isDayDataSaved = false;
     private String city;
     private int cityPosition;
-    private ViewPager viewPager;
     private Spinner spinner;
 
     @Override
@@ -34,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewPager = findViewById(R.id.viewPager);
         databaseHelper = new DatabaseHelper(this);
 
         setupSharedPreferences();
@@ -43,6 +46,16 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     private void setupSharedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void changeFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        this.fragment = fragment;
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, fragment, FRAGMENT_TAG)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(FRAGMENT_TAG)
+                .commit();
     }
 
     @Override
@@ -68,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
                 if (!isDayDataSaved) {
                     city = spinner.getSelectedItem().toString();
                     cityPosition = position;
+                    fragment = null;
                     startSendingRequest();
                 } else {
                     restoreData();
@@ -98,7 +112,10 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
     @Override
     public void onWeatherDataRequestSuccess(@NonNull List<Day> weatherData) {
-        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, weatherData, getCurrentUnit()));
+        if (fragment == null) {
+            fragment = (MainFragment.newInstance(weatherData, getCurrentUnit()));
+        }
+        changeFragment(fragment);
         databaseHelper.addCityPosition(cityPosition);
         databaseHelper.addWeatherData(weatherData);
     }
@@ -131,7 +148,10 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     }
 
     private void restoreData() {
-        viewPager.setAdapter(new WeatherDataPagerAdapter(MainActivity.this, databaseHelper.getWeatherData(), getCurrentUnit()));
+        if (fragment == null) {
+            fragment = MainFragment.newInstance(databaseHelper.getWeatherData(), getCurrentUnit());
+        }
+        changeFragment(fragment);
     }
 
     @Override
@@ -139,5 +159,19 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         if (key.equals("unit")) {
             restoreData();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager()
+                .putFragment(outState, fragment.getTag(), fragment);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+
     }
 }

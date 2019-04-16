@@ -36,7 +36,7 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
 
     @Override
     public void onBindViewHolder(WeatherDataViewHolder holder, int position) {
-        holder.bindProduct(weatherDataDetails.get(position));
+        holder.bindWeatherData(weatherDataDetails.get(position));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
             temperatureTextView = itemView.findViewById(R.id.temperature);
         }
 
-        void bindProduct(WeatherData weatherData) {
+        void bindWeatherData(WeatherData weatherData) {
             this.weatherData = weatherData;
 
             DateFormat dateFormat = new SimpleDateFormat("HH:");

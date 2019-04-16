@@ -1,10 +1,12 @@
 package com.alicedmitrieva.weatherapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.util.Date;
 
-public class WeatherData {
+public class WeatherData implements Parcelable {
 
     @NonNull private final Date time;
     @NonNull private final String description;
@@ -30,4 +32,36 @@ public class WeatherData {
         return temperature;
     }
 
+
+    protected WeatherData(Parcel in) {
+        long tmpTime = in.readLong();
+        time = tmpTime != -1 ? new Date(tmpTime) : null;
+        description = in.readString();
+        temperature = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(time != null ? time.getTime() : -1L);
+        dest.writeString(description);
+        dest.writeDouble(temperature);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<WeatherData> CREATOR = new Parcelable.Creator<WeatherData>() {
+        @Override
+        public WeatherData createFromParcel(Parcel in) {
+            return new WeatherData(in);
+        }
+
+        @Override
+        public WeatherData[] newArray(int size) {
+            return new WeatherData[size];
+        }
+    };
 }

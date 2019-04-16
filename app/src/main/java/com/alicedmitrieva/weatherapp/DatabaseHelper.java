@@ -16,15 +16,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "weatherInfoManager";
 
-    private interface CityTableColumns extends BaseColumns {
+    private interface ExtraDataTableColumns extends BaseColumns {
 
-        String KEY_CITY_POSITION = "city_position";
+        String KEY_UNIT = "unit";
+        String KEY_CITY_INDEX = "city_index";
 
-        String TABLE_CITIES = "cities";
+        String TABLE_EXTRA_DATA = "extra_data";
 
-        String CREATE_TABLE_CITIES = "CREATE TABLE " + TABLE_CITIES
+        String CREATE_TABLE_EXTRA_DATA = "CREATE TABLE " + TABLE_EXTRA_DATA
                 + "(" + _ID + " INTEGER PRIMARY KEY,"
-                + KEY_CITY_POSITION + " INTEGER" + ")";
+                + KEY_UNIT + " TEXT,"
+                + KEY_CITY_INDEX + " INTEGER" + ")";
     }
 
     private interface DayTableColumns extends BaseColumns {
@@ -62,23 +64,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CityTableColumns.CREATE_TABLE_CITIES);
+        db.execSQL(ExtraDataTableColumns.CREATE_TABLE_EXTRA_DATA);
         db.execSQL(DayTableColumns.CREATE_TABLE_DAYS);
         db.execSQL(DetailsTableColumns.CREATE_TABLE_DETAILS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + CityTableColumns.TABLE_CITIES);
+        db.execSQL("DROP TABLE IF EXISTS " + ExtraDataTableColumns.TABLE_EXTRA_DATA);
         db.execSQL("DROP TABLE IF EXISTS " + DayTableColumns.TABLE_DAYS);
         db.execSQL("DROP TABLE IF EXISTS " + DetailsTableColumns.TABLE_DETAILS);
 
         onCreate(db);
     }
 
-    public void clearCityPosition() {
-        String clearTableCities = "DELETE FROM " + CityTableColumns.TABLE_CITIES;
-        getReadableDatabase().execSQL(clearTableCities);
+    public void cleaExtraData() {
+        String clearTableExtraData = "DELETE FROM " + ExtraDataTableColumns.TABLE_EXTRA_DATA;
+        getReadableDatabase().execSQL(clearTableExtraData);
     }
 
     public void clearWeatherData() {
@@ -89,12 +91,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         getReadableDatabase().execSQL(clearTableSections);
     }
 
-    public void addCityPosition(int cityPosition) {
-        clearCityPosition();
+    public void addExtraData(String unit, int cityIndex) {
+        cleaExtraData();
         SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues cityValues = new ContentValues();
-        cityValues.put(CityTableColumns.KEY_CITY_POSITION, cityPosition);
-        database.insert(CityTableColumns.TABLE_CITIES, null, cityValues);
+        ContentValues extraValues = new ContentValues();
+        extraValues.put(ExtraDataTableColumns.KEY_UNIT, unit);
+        extraValues.put(ExtraDataTableColumns.KEY_CITY_INDEX, cityIndex);
+        database.insert(ExtraDataTableColumns.TABLE_EXTRA_DATA, null, extraValues);
     }
 
     public void addWeatherData(List<Day> weatherData) {
@@ -118,17 +121,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public int getCityPosition() {
+    public ExtraData getExtraData() {
         SQLiteDatabase database = this.getReadableDatabase();
 
-        Cursor cityCursor = database.query(CityTableColumns.TABLE_CITIES, null, null, null,
+        Cursor extraDataCursor = database.query(ExtraDataTableColumns.TABLE_EXTRA_DATA, null, null, null,
                 null, null, null);
 
-        int cityValue = 0;
-        for (cityCursor.moveToFirst(); !cityCursor.isAfterLast(); cityCursor.moveToNext()) {
-            cityValue = cityCursor.getInt(cityCursor.getColumnIndex(CityTableColumns.KEY_CITY_POSITION));
+        String unit = null;
+        int cityIndex = 0;
+        for (extraDataCursor.moveToFirst(); !extraDataCursor.isAfterLast(); extraDataCursor.moveToNext()) {
+            unit = extraDataCursor.getString(extraDataCursor.getColumnIndex(ExtraDataTableColumns.KEY_UNIT));
+            cityIndex = extraDataCursor.getInt(extraDataCursor.getColumnIndex(ExtraDataTableColumns.KEY_CITY_INDEX));
         }
-        return cityValue;
+        return new ExtraData(unit, cityIndex);
     }
 
 

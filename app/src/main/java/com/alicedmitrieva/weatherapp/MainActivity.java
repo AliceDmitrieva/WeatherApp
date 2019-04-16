@@ -23,16 +23,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener {
 
-    private static DatabaseHelper databaseHelper;
     private static final String FRAGMENT_TAG = "fragment tag";
+    private static DatabaseHelper databaseHelper;
     private Fragment fragment;
-
-    boolean isDayDataSaved = false;
+    private boolean isDayDataSaved = false;
+    private String currentUnit;
+    private int cityIndex;
     private String city;
-    private int cityPosition;
     private Spinner spinner;
-
-    private String currentUnit = "celsius";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         setContentView(R.layout.activity_main);
 
         databaseHelper = new DatabaseHelper(this);
-
+        currentUnit = (databaseHelper.getExtraData().getUnit() == null) ? "celsius" : databaseHelper.getExtraData().getUnit();
     }
 
     private void changeFragment(Fragment fragment) {
@@ -49,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, fragment, FRAGMENT_TAG)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(FRAGMENT_TAG)
                 .commit();
     }
 
@@ -66,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
         isDayDataSaved = isCurrentDateExisted();
         if (isDayDataSaved) {
-            cityPosition = databaseHelper.getCityPosition();
-            spinner.setSelection(cityPosition);
+            cityIndex = databaseHelper.getExtraData().getCityIndex();
+            spinner.setSelection(cityIndex);
         }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -75,11 +72,11 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (!isDayDataSaved) {
                     city = spinner.getSelectedItem().toString();
-                    cityPosition = position;
+                    cityIndex = position;
                     fragment = null;
-                    startSendingRequest();
+                    sendRequest();
                 } else {
-                    restoreData();
+                    restoreData(databaseHelper.getExtraData().getUnit());
                     isDayDataSaved = false;
                 }
             }
@@ -112,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
             fragment = (MainFragment.newInstance(weatherData, currentUnit));
         }
         changeFragment(fragment);
-        databaseHelper.addCityPosition(cityPosition);
+        databaseHelper.addExtraData(currentUnit, cityIndex);
         databaseHelper.addWeatherData(weatherData);
     }
 
@@ -122,11 +119,11 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
         if (requestCode == 1) {
             String result = data != null ? data.getStringExtra("unit") : null;
-                if ((!currentUnit.equals(result)) && (result != null)) {
-                    currentUnit = result;
-                    fragment = null;
-                    restoreData();
-                }
+            if ((!currentUnit.equals(result)) && (result != null)) {
+                currentUnit = result;
+                fragment = null;
+                restoreData(currentUnit);
+            }
         }
     }
 
@@ -135,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
     }
 
-    void startSendingRequest() {
+    private void sendRequest() {
         if (spinner != null) {
             new RespondWeatherDataTask(MainActivity.this, city).execute();
         }
@@ -152,9 +149,9 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         }
     }
 
-    private void restoreData() {
+    private void restoreData(String unit) {
         if (fragment == null) {
-            fragment = MainFragment.newInstance(databaseHelper.getWeatherData(), currentUnit);
+            fragment = MainFragment.newInstance(databaseHelper.getWeatherData(), unit);
         }
         changeFragment(fragment);
     }
@@ -171,6 +168,5 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
-
     }
 }

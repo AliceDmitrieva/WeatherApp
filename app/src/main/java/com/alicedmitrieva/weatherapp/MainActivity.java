@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener {
 
     private static DatabaseHelper databaseHelper;
     private static final String FRAGMENT_TAG = "fragment tag";
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     private int cityPosition;
     private Spinner spinner;
 
+    private String currentUnit = "celsius";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +43,6 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
 
         databaseHelper = new DatabaseHelper(this);
 
-        setupSharedPreferences();
-    }
-
-    private void setupSharedPreferences() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     private void changeFragment(Fragment fragment) {
@@ -102,8 +99,12 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+ //               Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+ //               startActivityForResult(intent, currentUnit);
+
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -113,11 +114,28 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     @Override
     public void onWeatherDataRequestSuccess(@NonNull List<Day> weatherData) {
         if (fragment == null) {
-            fragment = (MainFragment.newInstance(weatherData, getCurrentUnit()));
+            fragment = (MainFragment.newInstance(weatherData, currentUnit));
         }
         changeFragment(fragment);
         databaseHelper.addCityPosition(cityPosition);
         databaseHelper.addWeatherData(weatherData);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String result = data.getStringExtra("unit");
+                currentUnit = result;
+                fragment = null;
+                restoreData();
+            }
+            if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Data was not changed", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -142,30 +160,19 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         }
     }
 
-    private String getCurrentUnit() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString
-                (getString(R.string.pref_unit_key), getString(R.string.pref_unit_celsius_value));
-    }
-
     private void restoreData() {
         if (fragment == null) {
-            fragment = MainFragment.newInstance(databaseHelper.getWeatherData(), getCurrentUnit());
+            fragment = MainFragment.newInstance(databaseHelper.getWeatherData(), currentUnit);
         }
         changeFragment(fragment);
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("unit")) {
-            restoreData();
-        }
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager()
-                .putFragment(outState, fragment.getTag(), fragment);
+                .putFragment(outState, FRAGMENT_TAG, fragment);
     }
 
     @Override

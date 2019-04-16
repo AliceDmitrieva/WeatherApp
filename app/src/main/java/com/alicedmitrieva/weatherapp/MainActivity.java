@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
             String result = data != null ? data.getStringExtra("unit") : null;
             if ((!currentUnit.equals(result)) && (result != null)) {
                 currentUnit = result;
+                databaseHelper.addExtraData(currentUnit, cityIndex);
                 fragment = null;
                 restoreData(currentUnit);
             }

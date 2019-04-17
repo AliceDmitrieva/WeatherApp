@@ -1,4 +1,4 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.models;
 
 import android.support.annotation.NonNull;
 

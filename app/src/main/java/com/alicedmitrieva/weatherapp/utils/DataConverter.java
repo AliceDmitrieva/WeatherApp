@@ -1,4 +1,4 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

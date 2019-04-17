@@ -1,4 +1,4 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.alicedmitrieva.weatherapp.fragments.MainFragment;
+import com.alicedmitrieva.weatherapp.R;
+import com.alicedmitrieva.weatherapp.models.Day;
+import com.alicedmitrieva.weatherapp.utils.DatabaseHelper;
+import com.alicedmitrieva.weatherapp.utils.RespondWeatherDataTask;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

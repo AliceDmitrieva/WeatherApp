@@ -1,4 +1,4 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alicedmitrieva.weatherapp.utils.Formatter;
+import com.alicedmitrieva.weatherapp.utils.NetworkUtils;
+import com.alicedmitrieva.weatherapp.R;
+import com.alicedmitrieva.weatherapp.models.WeatherData;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

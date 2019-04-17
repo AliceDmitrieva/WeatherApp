@@ -1,8 +1,11 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.alicedmitrieva.weatherapp.models.Day;
+import com.alicedmitrieva.weatherapp.fragments.OneDayFragment;
 
 import java.util.List;
 

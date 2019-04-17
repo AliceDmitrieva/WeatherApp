@@ -1,4 +1,4 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.alicedmitrieva.weatherapp.R;
+import com.alicedmitrieva.weatherapp.adapters.OneDayWeatherDataAdapter;
+import com.alicedmitrieva.weatherapp.models.Day;
+import com.alicedmitrieva.weatherapp.models.WeatherData;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

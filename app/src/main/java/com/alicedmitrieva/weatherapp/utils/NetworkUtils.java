@@ -1,6 +1,9 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.utils;
 
 import android.content.Context;
+
+import com.alicedmitrieva.weatherapp.R;
+import com.alicedmitrieva.weatherapp.models.WeatherData;
 
 import java.io.BufferedReader;
 import java.io.IOException;

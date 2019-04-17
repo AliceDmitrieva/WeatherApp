@@ -1,4 +1,4 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

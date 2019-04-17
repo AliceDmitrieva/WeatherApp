@@ -1,8 +1,12 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.utils;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.alicedmitrieva.weatherapp.models.Day;
+import com.alicedmitrieva.weatherapp.utils.NetworkUtils;
+import com.alicedmitrieva.weatherapp.utils.WeatherDataParser;
 
 import java.util.List;
 

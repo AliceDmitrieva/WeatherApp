@@ -1,6 +1,9 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.utils;
 
 import android.content.Context;
+
+import com.alicedmitrieva.weatherapp.R;
+import com.alicedmitrieva.weatherapp.utils.DataConverter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

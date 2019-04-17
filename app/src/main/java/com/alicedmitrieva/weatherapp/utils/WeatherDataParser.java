@@ -1,6 +1,9 @@
-package com.alicedmitrieva.weatherapp;
+package com.alicedmitrieva.weatherapp.utils;
 
 import android.support.annotation.NonNull;
+
+import com.alicedmitrieva.weatherapp.models.Day;
+import com.alicedmitrieva.weatherapp.models.WeatherData;
 
 import org.json.JSONException;
 import org.json.JSONObject;

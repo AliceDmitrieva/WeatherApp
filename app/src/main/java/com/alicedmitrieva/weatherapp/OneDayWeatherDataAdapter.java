@@ -29,7 +29,7 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
@@ -41,7 +41,7 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
     }
 
     @Override
-    public void onBindViewHolder(WeatherDataViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WeatherDataViewHolder holder, int position) {
         holder.bindWeatherData(weatherDataDetails.get(position));
     }
 
@@ -69,20 +69,14 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
         void bindWeatherData(WeatherData weatherData) {
             this.weatherData = weatherData;
 
-            DateFormat dateFormat = new SimpleDateFormat("HH:");
-            String time = dateFormat.format(weatherData.getTime());
-
-            timeTextView.setText(time + "00");
-
+            timeTextView.setText(Formatter.formatTime(weatherData.getTime()));
             Picasso.get().load(NetworkUtils.getIconUrl(context, weatherData)).into(iconImageView);
-
             descriptionTextView.setText(weatherData.getDescription());
 
-            DecimalFormat f = new DecimalFormat("#0");
             if (currentUnit.equals("fahrenheit")) {
-                temperatureTextView.setText(f.format(DataConverter.celsiusToFahrenheit(weatherData.getTemperature())) + " °F");
+                temperatureTextView.setText((DataConverter.celsiusToFahrenheit(weatherData.getTemperature())) + " °F");
             } else {
-                temperatureTextView.setText(f.format(weatherData.getTemperature() )+ " °С");
+                temperatureTextView.setText((weatherData.getTemperature()) + " °С");
             }
         }
     }

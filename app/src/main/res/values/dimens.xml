@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="marginTopText">30dp</dimen>
+    <dimen name="marginTopImage">20dp</dimen>
+    <dimen name="marginStartPortrait">10dp</dimen>
+    <dimen name="marginStartLandscape">30dp</dimen>
+    <dimen name="textSizeDate">50sp</dimen>
+    <dimen name="textSizeDetails">20sp</dimen>
+    <dimen name="imageSize">50dp</dimen>
+    <dimen name="textSizeSpinnerPortrait">20sp</dimen>
+    <dimen name="textSizeSpinnerLandscape">15sp</dimen>
+    <dimen name="widthDescription">150dp</dimen>
+    <dimen name="widthTemperature">50dp</dimen>
+    <dimen name="paddingStartSpinner">15dp</dimen>
+    <dimen name="paddingEndSpinner">15dp</dimen>
+    <dimen name="paddingBottomSpinner">15dp</dimen>
+</resources>

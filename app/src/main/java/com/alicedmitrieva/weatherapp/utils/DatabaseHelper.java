@@ -20,50 +20,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "weatherInfoManager";
 
-    private interface ExtraDataTableColumns extends BaseColumns {
-
-        String KEY_UNIT = "unit";
-        String KEY_CITY_INDEX = "city_index";
-
-        String TABLE_EXTRA_DATA = "extra_data";
-
-        String CREATE_TABLE_EXTRA_DATA = "CREATE TABLE " + TABLE_EXTRA_DATA
-                + "(" + _ID + " INTEGER PRIMARY KEY,"
-                + KEY_UNIT + " TEXT,"
-                + KEY_CITY_INDEX + " INTEGER" + ")";
-    }
-
-    private interface DayTableColumns extends BaseColumns {
-
-        String KEY_DATE = "date";
-
-        String TABLE_DAYS = "days";
-
-        String CREATE_TABLE_DAYS = "CREATE TABLE " + TABLE_DAYS
-                + "(" + _ID + " INTEGER PRIMARY KEY,"
-                + KEY_DATE + " INTEGER" + ")";
-    }
-
-    private interface DetailsTableColumns extends BaseColumns {
-
-        String KEY_DAY_ID = "day_id";
-        String KEY_TIME = "time";
-        String KEY_ICON = "icon";
-        String KEY_TEMPERATURE = "temperature";
-        String KEY_DESCRIPTION = "description";
-
-        String TABLE_DETAILS = "details";
-
-        String CREATE_TABLE_DETAILS = "CREATE TABLE " + TABLE_DETAILS
-                + "(" + _ID + " INTEGER PRIMARY KEY,"
-                + KEY_TIME + " DATETIME,"
-                + KEY_ICON + " TEXT,"
-                + KEY_DESCRIPTION + " TEXT,"
-                + KEY_TEMPERATURE + " REAL,"
-                + KEY_DAY_ID + " INTEGER,"
-                + " FOREIGN KEY (" + KEY_DAY_ID + ") REFERENCES " + DayTableColumns.TABLE_DAYS + "(" + DayTableColumns._ID + "));";
-    }
-
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -112,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         for (Day day : weatherData) {
             ContentValues dayValues = new ContentValues();
-            dayValues.put(DayTableColumns.KEY_DATE, DataConverter.convertStringtoLong(day.getDate().toString()));
+            dayValues.put(DayTableColumns.KEY_DATE, DataConverter.dateStringToMilliseconds(day.getDate().toString()));
             long dayId = database.insert(DayTableColumns.TABLE_DAYS, null, dayValues);
 
             for (WeatherData details : day.getDetailInformation()) {
@@ -142,7 +98,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return new ExtraData(unit, cityIndex);
     }
-
 
     public List<Day> getWeatherData() {
         SQLiteDatabase database = this.getReadableDatabase();
@@ -179,5 +134,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return weatherData;
+    }
+
+    private interface ExtraDataTableColumns extends BaseColumns {
+
+        String KEY_UNIT = "unit";
+        String KEY_CITY_INDEX = "city_index";
+
+        String TABLE_EXTRA_DATA = "extra_data";
+
+        String CREATE_TABLE_EXTRA_DATA = "CREATE TABLE " + TABLE_EXTRA_DATA
+                + "(" + _ID + " INTEGER PRIMARY KEY,"
+                + KEY_UNIT + " TEXT,"
+                + KEY_CITY_INDEX + " INTEGER" + ")";
+    }
+
+    private interface DayTableColumns extends BaseColumns {
+
+        String KEY_DATE = "date";
+
+        String TABLE_DAYS = "days";
+
+        String CREATE_TABLE_DAYS = "CREATE TABLE " + TABLE_DAYS
+                + "(" + _ID + " INTEGER PRIMARY KEY,"
+                + KEY_DATE + " INTEGER" + ")";
+    }
+
+    private interface DetailsTableColumns extends BaseColumns {
+
+        String KEY_DAY_ID = "day_id";
+        String KEY_TIME = "time";
+        String KEY_ICON = "icon";
+        String KEY_TEMPERATURE = "temperature";
+        String KEY_DESCRIPTION = "description";
+
+        String TABLE_DETAILS = "details";
+
+        String CREATE_TABLE_DETAILS = "CREATE TABLE " + TABLE_DETAILS
+                + "(" + _ID + " INTEGER PRIMARY KEY,"
+                + KEY_TIME + " DATETIME,"
+                + KEY_ICON + " TEXT,"
+                + KEY_DESCRIPTION + " TEXT,"
+                + KEY_TEMPERATURE + " REAL,"
+                + KEY_DAY_ID + " INTEGER,"
+                + " FOREIGN KEY (" + KEY_DAY_ID + ") REFERENCES " + DayTableColumns.TABLE_DAYS + "(" + DayTableColumns._ID + "));";
     }
 }

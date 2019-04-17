@@ -54,4 +54,7 @@ public class NetworkUtils {
         return context.getResources().getString(R.string.icon_url) + weatherData.getIcon() + ".png";
     }
 
+    public static String getForecastUrl(Context context, String city) {
+        return NetworkUtils.readUrl(context.getString(R.string.forecast_url) + city);
+    }
 }

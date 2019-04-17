@@ -8,12 +8,15 @@ import java.util.Date;
 
 public class WeatherData implements Parcelable {
 
-    @NonNull private final Date time;
-    @NonNull private final String icon;
-    @NonNull private final String description;
-    @NonNull private final double temperature;
+    @NonNull
+    private final Date time;
+    @NonNull
+    private final String icon;
+    @NonNull
+    private final String description;
+    private final double temperature;
 
-    public WeatherData (@NonNull Date time, @NonNull String icon, @NonNull String description, @NonNull double temperature) {
+    public WeatherData (@NonNull Date time, @NonNull String icon, @NonNull String description, double temperature) {
         this.time = time;
         this.icon = icon;
         this.description = description;
@@ -71,5 +74,4 @@ public class WeatherData implements Parcelable {
             return new WeatherData[size];
         }
     };
-
 }

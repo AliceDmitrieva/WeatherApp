@@ -2,6 +2,7 @@ package com.alicedmitrieva.weatherapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,9 +17,8 @@ import com.alicedmitrieva.weatherapp.R;
 import com.alicedmitrieva.weatherapp.adapters.OneDayWeatherDataAdapter;
 import com.alicedmitrieva.weatherapp.models.Day;
 import com.alicedmitrieva.weatherapp.models.WeatherData;
+import com.alicedmitrieva.weatherapp.utils.Formatter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -50,7 +50,7 @@ public class OneDayFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_one_day, null);
 
         TextView dateTextView = view.findViewById(R.id.date);
@@ -63,17 +63,20 @@ public class OneDayFragment extends Fragment {
 
         ArrayList<WeatherData> weatherDataList = arguments.getParcelableArrayList(ARGUMENT_WEATHER_DATA_LIST);
         if (weatherDataList == null) {
-            throw new IllegalArgumentException("product list == null");
+            throw new IllegalArgumentException("weather_list == null");
         }
 
         String unit = arguments.getString(ARGUMENT_UNIT);
+        if (unit == null) {
+            throw new IllegalArgumentException("unit == null");
+        }
 
         Date date = (Date) arguments.getSerializable(ARGUMENT_DATE);
+        if (date == null) {
+            throw new IllegalArgumentException("date == null");
+        }
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String day = dateFormat.format(date);
-
-        dateTextView.setText(day);
+        dateTextView.setText(Formatter.formatDate(date));
         OneDayWeatherDataAdapter adapter = new OneDayWeatherDataAdapter(this.getContext(), weatherDataList, unit);
         recyclerView.setAdapter(adapter);
 
@@ -84,6 +87,3 @@ public class OneDayFragment extends Fragment {
         return view;
     }
 }
-
-
-

@@ -20,5 +20,6 @@
     <string name="icon_url">http://openweathermap.org/img/w/</string>
     <string name="extra_unit">unit</string>
     <string name="no_internet">No Internet Connection</string>
+    <string name="forecast_url"><![CDATA[http://api.openweathermap.org/data/2.5/forecast?APPID=e79c6b6753eae1b7c303c76c35478554&units=metric&q=]]></string>
 
 </resources>

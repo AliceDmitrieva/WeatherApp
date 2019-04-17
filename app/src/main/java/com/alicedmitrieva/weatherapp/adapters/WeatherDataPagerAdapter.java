@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WeatherDataPagerAdapter extends FragmentPagerAdapter {
 
-    private static List<Day> weatherData;
+    private List<Day> weatherData;
     private String unit;
 
     public WeatherDataPagerAdapter(FragmentManager fragmentManager, List<Day> weatherData, String unit) {
@@ -29,5 +29,4 @@ public class WeatherDataPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return weatherData.size();
     }
-
 }

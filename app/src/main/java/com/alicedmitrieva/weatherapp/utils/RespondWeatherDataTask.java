@@ -1,12 +1,11 @@
 package com.alicedmitrieva.weatherapp.utils;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.alicedmitrieva.weatherapp.models.Day;
-import com.alicedmitrieva.weatherapp.utils.NetworkUtils;
-import com.alicedmitrieva.weatherapp.utils.WeatherDataParser;
 
 import java.util.List;
 
@@ -26,12 +25,10 @@ public class RespondWeatherDataTask extends AsyncTask<String, Void, List<Day>> {
 
     @Override
     protected List<Day> doInBackground(String... arg) {
-        String forecastURL = "http://api.openweathermap.org/data/2.5/forecast?APPID=e79c6b6753eae1b7c303c76c35478554&units=metric&q=";
-        String jsonString = NetworkUtils.readUrl(forecastURL + city);
+        String jsonString = NetworkUtils.getForecastUrl((Context) listener, city);
 
         try {
             return WeatherDataParser.parseJSON(jsonString);
-
         } catch (Exception e) {
             occurredError = e;
             return null;

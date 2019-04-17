@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeatherDataAdapter.WeatherDataViewHolder> {
@@ -72,13 +69,7 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
             timeTextView.setText(Formatter.formatTime(weatherData.getTime()));
             Picasso.get().load(NetworkUtils.getIconUrl(context, weatherData)).into(iconImageView);
             descriptionTextView.setText(weatherData.getDescription());
-
-            if (currentUnit.equals("fahrenheit")) {
-                temperatureTextView.setText((DataConverter.celsiusToFahrenheit(weatherData.getTemperature())) + " °F");
-            } else {
-                temperatureTextView.setText((weatherData.getTemperature()) + " °С");
-            }
+            temperatureTextView.setText(Formatter.formatTemperature(context, weatherData.getTemperature(), currentUnit));
         }
     }
 }
-

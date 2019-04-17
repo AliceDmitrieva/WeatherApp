@@ -41,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("unit")) {
+        if (key.equals(getString(R.string.pref_unit_key))) {
             setUnit(sharedPreferences.getString(getString(R.string.pref_unit_key), getString(R.string.pref_unit_celsius_value)));
         }
     }
@@ -65,7 +65,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     private void sendDataToMainActivity() {
         Intent intent = new Intent();
-        intent.putExtra("unit", getUnit());
+        intent.putExtra(getString(R.string.pref_unit_key), getUnit());
         setResult(RESULT_OK, intent);
     }
 }

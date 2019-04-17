@@ -18,5 +18,7 @@
     <string name="pref_unit_fahrenheit_value" translatable="false">fahrenheit</string>
 
     <string name="icon_url">http://openweathermap.org/img/w/</string>
+    <string name="extra_unit">unit</string>
+    <string name="no_internet">No Internet Connection</string>
 
 </resources>

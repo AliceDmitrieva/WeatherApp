@@ -11,6 +11,11 @@ import java.util.Date;
 
 public class Formatter {
 
+    public static String formatDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(date);
+    }
+
     public static String formatTime(Date date) {
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
         return timeFormat.format(date);

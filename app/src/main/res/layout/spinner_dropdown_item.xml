@@ -6,4 +6,4 @@
     android:paddingEnd="@dimen/paddingEndSpinner"
     android:paddingBottom="@dimen/paddingBottomSpinner"
     android:textColor="@color/colorSpinnerText"
-    android:textSize="@dimen/textSizeSpinnerPortrait" />
+    android:textSize="@dimen/textSizeSpinner" />

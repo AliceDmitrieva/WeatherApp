@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="marginTopText">30dp</dimen>
+    <dimen name="marginTopImage">20dp</dimen>
+    <dimen name="marginStart">70dp</dimen>
+    <dimen name="textSizeDate">50sp</dimen>
+    <dimen name="textSizeDetails">20sp</dimen>
+    <dimen name="imageSize">50dp</dimen>
+    <dimen name="textSizeSpinner">15sp</dimen>
+    <dimen name="widthDescription">150dp</dimen>
+    <dimen name="widthTemperature">50dp</dimen>
+    <dimen name="paddingStartSpinner">15dp</dimen>
+    <dimen name="paddingEndSpinner">15dp</dimen>
+    <dimen name="paddingBottomSpinner">15dp</dimen>
+</resources>

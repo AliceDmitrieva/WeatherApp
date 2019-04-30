@@ -2,14 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginStartPortrait"
+        android:layout_marginStart="@dimen/marginStart"
         android:layout_marginTop="@dimen/marginTopText"
         android:text="@string/time_text"
         android:textColor="@color/colorAccent"
@@ -20,7 +19,7 @@
         android:id="@+id/icon"
         android:layout_width="@dimen/imageSize"
         android:layout_height="@dimen/imageSize"
-        android:layout_marginStart="@dimen/marginStartPortrait"
+        android:layout_marginStart="@dimen/marginStart"
         android:layout_marginTop="@dimen/marginTopImage"
         android:layout_toEndOf="@+id/time"
         android:src="@mipmap/ic_launcher_round" />
@@ -29,7 +28,7 @@
         android:id="@+id/description"
         android:layout_width="@dimen/widthDescription"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginStartPortrait"
+        android:layout_marginStart="@dimen/marginStart"
         android:layout_marginTop="@dimen/marginTopText"
         android:layout_toEndOf="@+id/icon"
         android:text="@string/description_text"
@@ -40,7 +39,7 @@
         android:id="@+id/temperature"
         android:layout_width="@dimen/widthTemperature"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginStartPortrait"
+        android:layout_marginStart="@dimen/marginStart"
         android:layout_marginTop="@dimen/marginTopText"
         android:layout_toEndOf="@+id/description"
         android:text="@string/temperature_text"

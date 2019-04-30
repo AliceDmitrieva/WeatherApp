@@ -28,6 +28,12 @@ public class OneDayFragment extends Fragment {
     private static final String ARGUMENT_UNIT = "unit";
     private static final String ARGUMENT_DATE = "date";
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     public static OneDayFragment newInstance(Day day, String currentUnit) {
         OneDayFragment fragment = new OneDayFragment();
         Bundle args = new Bundle();

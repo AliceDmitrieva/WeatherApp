@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_CODE) {
             String result = data != null ? data.getStringExtra(getString(R.string.extra_unit)) : null;
             if ((!currentUnit.equals(result)) && (result != null)) {
                 currentUnit = result;

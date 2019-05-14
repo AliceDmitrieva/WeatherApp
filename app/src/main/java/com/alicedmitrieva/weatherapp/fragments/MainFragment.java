@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.alicedmitrieva.weatherapp.R;
 import com.alicedmitrieva.weatherapp.adapters.WeatherDataPagerAdapter;
@@ -37,15 +38,19 @@ public class MainFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
-        View view = inflater.inflate(R.layout.fragment_main, null);
-        ViewPager viewPager = view.findViewById(R.id.viewPager);
+        RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.fragment_main, null);
+        view.removeAllViews();
+        ViewPager viewPager = new ViewPager(getContext());
+        viewPager.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        viewPager.setId(R.id.viewPager);
+        view.addView(viewPager);
 
         Bundle arguments = getArguments();
         if (arguments == null) {
             throw new IllegalArgumentException("arguments == null");
         }
 
-        ArrayList dayList = arguments.getParcelableArrayList(ARGUMENT_DAY_LIST);
+        ArrayList<Day> dayList = arguments.getParcelableArrayList(ARGUMENT_DAY_LIST);
         if (dayList == null) {
             throw new IllegalArgumentException("dayList == null");
         }
@@ -55,15 +60,9 @@ public class MainFragment extends Fragment {
             throw new IllegalArgumentException("unit == null");
         }
 
-        WeatherDataPagerAdapter weatherDataPagerAdapter = new WeatherDataPagerAdapter(getChildFragmentManager(), dayList, unit);
+        WeatherDataPagerAdapter weatherDataPagerAdapter = new WeatherDataPagerAdapter(getActivity(), dayList, unit);
         viewPager.setAdapter(weatherDataPagerAdapter);
 
         return view;
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
     }
 }

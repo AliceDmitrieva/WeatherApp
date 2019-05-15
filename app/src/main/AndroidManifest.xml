@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"> 
+        <!-- attribute usesCleartextTraffic is necessary for Internet connection on Android 9. -->
         <activity
             android:name=".activities.MainActivity">
             <intent-filter>

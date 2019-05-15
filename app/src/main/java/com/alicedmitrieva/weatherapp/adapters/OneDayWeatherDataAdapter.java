@@ -1,5 +1,6 @@
 package com.alicedmitrieva.weatherapp.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -19,12 +20,12 @@ import java.util.List;
 
 public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeatherDataAdapter.WeatherDataViewHolder> {
 
-    private Context context;
+    private Activity activity;
     private List<WeatherData> weatherDataDetails;
     private String currentUnit;
 
-    public OneDayWeatherDataAdapter(Context context, List<WeatherData> weatherDataDetails, String currentUnit) {
-        this.context = context;
+    public OneDayWeatherDataAdapter(Activity activity, List<WeatherData> weatherDataDetails, String currentUnit) {
+        this.activity = activity;
         this.weatherDataDetails = weatherDataDetails;
         this.currentUnit = currentUnit;
     }
@@ -71,9 +72,9 @@ public class OneDayWeatherDataAdapter extends RecyclerView.Adapter<OneDayWeather
             this.weatherData = weatherData;
 
             timeTextView.setText(Formatter.formatTime(weatherData.getTime()));
-            Picasso.get().load(NetworkUtils.getIconUrl(context, weatherData)).into(iconImageView);
+            Picasso.get().load(NetworkUtils.getIconUrl(activity, weatherData)).into(iconImageView);
             descriptionTextView.setText(weatherData.getDescription());
-            temperatureTextView.setText(Formatter.formatTemperature(context, weatherData.getTemperature(), currentUnit));
+            temperatureTextView.setText(Formatter.formatTemperature(activity, weatherData.getTemperature(), currentUnit));
         }
     }
 }

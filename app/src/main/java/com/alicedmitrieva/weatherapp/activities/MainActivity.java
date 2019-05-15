@@ -19,24 +19,30 @@ import android.widget.Toast;
 import com.alicedmitrieva.weatherapp.R;
 import com.alicedmitrieva.weatherapp.fragments.MainFragment;
 import com.alicedmitrieva.weatherapp.models.Day;
+import com.alicedmitrieva.weatherapp.models.WeatherData;
 import com.alicedmitrieva.weatherapp.utils.DatabaseHelper;
 import com.alicedmitrieva.weatherapp.utils.Formatter;
 import com.alicedmitrieva.weatherapp.utils.RespondWeatherDataTask;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RespondWeatherDataTask.WeatherDataListener {
 
-    private static final String FRAGMENT_TAG = "fragment tag";
+    private static final String FRAGMENT_TAG = "fragment_tag";
+    private static final String ARGUMENT_DAY_LIST = "day_list";
+    private static final String ARGUMENT_UNIT = "unit";
     private static final int REQUEST_CODE = 1;
+
     private static DatabaseHelper databaseHelper;
+
     private Fragment fragment;
+    private Spinner spinner;
     private boolean isDayDataSaved = false;
     private String currentUnit;
     private int cityIndex;
     private String city;
-    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,19 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         databaseHelper = new DatabaseHelper(this);
         currentUnit = (databaseHelper.getExtraData().getUnit() == null) ?
                 getString(R.string.pref_unit_celsius_value) : databaseHelper.getExtraData().getUnit();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager()
+                .putFragment(outState, FRAGMENT_TAG, fragment);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
     }
 
     @Override
@@ -70,10 +89,9 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
                 if (!isDayDataSaved) {
                     city = spinner.getSelectedItem().toString();
                     cityIndex = position;
-                    fragment = null;
                     sendRequest();
                 } else {
-                    restoreData(databaseHelper.getExtraData().getUnit());
+                    addOrReplaceFragment(databaseHelper.getExtraData().getUnit());
                     isDayDataSaved = false;
                 }
             }
@@ -98,16 +116,19 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         }
     }
 
-    private void restoreData(String unit) {
-        if (fragment == null) {
-            fragment = MainFragment.newInstance(databaseHelper.getWeatherData(), unit);
-        }
-        changeFragment(fragment);
-    }
 
-    private void sendRequest() {
-        if (spinner != null) {
-            new RespondWeatherDataTask(MainActivity.this, city).execute();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE) {
+            String result = data != null ? data.getStringExtra(getString(R.string.extra_unit)) : null;
+            if (!currentUnit.equals(result) && result != null) {
+                currentUnit = result;
+                databaseHelper.addExtraData(currentUnit, cityIndex);
+                fragment = null;
+                addOrReplaceFragment(currentUnit);
+            }
         }
     }
 
@@ -115,8 +136,15 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     public void onWeatherDataRequestSuccess(@NonNull List<Day> weatherData) {
         if (fragment == null) {
             fragment = (MainFragment.newInstance(weatherData, currentUnit));
+            replaceFragment(fragment);
+        } else {
+            setData(weatherData, currentUnit);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .detach(fragment)
+                    .attach(fragment)
+                    .commit();
         }
-        changeFragment(fragment);
         databaseHelper.addExtraData(currentUnit, cityIndex);
         databaseHelper.addWeatherData(weatherData);
     }
@@ -124,6 +152,38 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
     @Override
     public void onWeatherDataRequestError(@NonNull Exception error) {
         Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        this.fragment = fragment;
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, fragment, FRAGMENT_TAG)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
+    private void setData(List<Day> daysInformation, String unit) {
+        Bundle arguments = new Bundle();
+        arguments.putParcelableArrayList(ARGUMENT_DAY_LIST, new ArrayList<>(daysInformation));
+        arguments.putString(ARGUMENT_UNIT, unit);
+        fragment.setArguments(arguments);
+    }
+
+    private void addOrReplaceFragment(String unit) {
+        if (fragment == null) {
+            fragment = MainFragment.newInstance(databaseHelper.getWeatherData(), unit);
+            replaceFragment(fragment);
+        } else {
+            setData(databaseHelper.getWeatherData(), unit);
+
+        }
+    }
+
+    private void sendRequest() {
+        if (spinner != null) {
+            new RespondWeatherDataTask(MainActivity.this, city).execute();
+        }
     }
 
     private void setSelection() {
@@ -139,42 +199,5 @@ public class MainActivity extends AppCompatActivity implements RespondWeatherDat
         } else {
             return false;
         }
-    }
-
-    private void changeFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        this.fragment = fragment;
-        fragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, fragment, FRAGMENT_TAG)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1) {
-            String result = data != null ? data.getStringExtra(getString(R.string.extra_unit)) : null;
-            if ((!currentUnit.equals(result)) && (result != null)) {
-                currentUnit = result;
-                databaseHelper.addExtraData(currentUnit, cityIndex);
-                fragment = null;
-                restoreData(currentUnit);
-            }
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        getSupportFragmentManager()
-                .putFragment(outState, FRAGMENT_TAG, fragment);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
     }
 }
